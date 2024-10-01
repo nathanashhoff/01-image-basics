@@ -49,8 +49,8 @@ def load_image(img_path, is_label_img):
     # todo: if 'is_label_img' is True use argument outputPixelType=sitk.sitkUInt8,
     #  else use outputPixelType=sitk.sitkFloat32
     """
-    pixel_type = None  # todo: modify here
-    img = None  # todo: modify here
+    pixel_type = sitk.sitkUInt8 if is_label_img else sitk.sitkFloat32 # todo: modify here
+    img = sitk.ReadImage(img_path, outputPixelType=pixel_type)  # todo: modify here
 
     return img
 
@@ -60,7 +60,7 @@ def to_numpy_array(img):
     TO_NUMPY_ARRAY:
     # todo: transform the SimpleITK image to a numpy ndarray (hint: 'GetArrayFromImage')
     """
-    np_img = None  # todo: modify here
+    np_img = sitk.GetArrayFromImage(img) # todo: modify here
 
     return np_img
 
@@ -73,7 +73,7 @@ def to_sitk_image(np_image, reference_img):
     #  (hint: 'CopyInformation')! (otherwise defaults are set)
     """
 
-    img = None  # todo: modify here
+    img = sitk.GetImageFromArray(np.image, CopyInformation=reference_img)  # todo: modify here
     # todo: ...
 
     return img
@@ -88,7 +88,7 @@ def preprocess_rescale_numpy(np_img, new_min_val, new_max_val):
     max_val = np_img.max()
     min_val = np_img.min()
 
-    rescaled_np_img = None  # todo: modify here
+    rescaled_np_img = (np_img-min_val)*((new_max_val-new_min_val)/(max_val-min_val))+new_min_val  # todo: modify here
 
     return rescaled_np_img
 
@@ -99,7 +99,7 @@ def preprocess_rescale_sitk(img, new_min_val, new_max_val):
     # todo: rescale the intensities of the img to the range [new_min_val, new_max_val]
     # (hint: RescaleIntensity)
     """
-    rescaled_img = None  # todo: modify here
+    rescaled_img = sitk.RescaleIntensity(img, new_min_val, new_max_val) # todo: modify here
 
     return rescaled_img
 
